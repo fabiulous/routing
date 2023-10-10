@@ -47,6 +47,7 @@
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/fabiulous/routing.git"
+
   },
   "author": "Fabio Santos",
   "license": "ISC",
