@@ -27,7 +27,7 @@ jobs:
 
     - name: Lint
       run: |
-        yarn ts
+        yarn run ts
 
     - name: Test
-      run: yarn test
+      run: yarn run test
