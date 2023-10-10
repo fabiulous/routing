@@ -1,0 +1,57 @@
+{
+  "name": "routing",
+  "private": false,
+  "version": "0.1.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/routing.umd.cjs",
+  "module": "./dist/routing.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/routing.js",
+      "require": "./dist/routing.umd.cjs"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^14.0.0",
+    "@types/react": "^18.2.14",
+    "@vitejs/plugin-react": "^4.0.1",
+    "@vitest/coverage-v8": "^0.33.0",
+    "happy-dom": "^10.1.1",
+    "pathe": "^1.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.0.2",
+    "vite": "^4.3.9",
+    "vite-plugin-dts": "^3.1.0",
+    "vite-plugin-static-copy": "^0.16.0",
+    "vitest": "^0.33.0"
+  },
+  "dependencies": {
+    "query-string": "8.1.0",
+    "react-use": "17.4.0"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:fabiulous/routing.git"
+  },
+  "author": "Fabio Santos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fabiulous/routing/issues"
+  },
+  "homepage": "https://github.com/fabiulous/routing",
+  "description": ""
+}
