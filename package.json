@@ -20,6 +20,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "test": "vitest",
+    "ts": "tsc -p ./tsconfig.json",
     "coverage": "vitest run --coverage"
   },
   "devDependencies": {
