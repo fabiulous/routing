@@ -1,6 +1,7 @@
 /// <reference types="react" />
 import { Routing } from './types';
 export { generateRoutes } from './routing';
+export * from './helpers/query';
 export declare const generateRouting: <T extends Routing.Config>(fn: Routing.ConfigFn, config: T) => {
     RoutingContext: import("react").Context<Routing.ContextProps<Routing.RecursiveRoutes<T>>>;
     useRouter: () => Routing.RecursiveRoutes<T>;

@@ -1,6 +1,6 @@
-import u, { useEffect as q } from "react";
-const T = (r, e) => {
-  const t = M(r, e);
+import u, { useEffect as T } from "react";
+const B = (r, e) => {
+  const t = q(r, e);
   return u.createContext({
     router: t,
     location: {
@@ -10,21 +10,21 @@ const T = (r, e) => {
     },
     go: (c, s) => r(window.location.pathname, c, s)
   });
-}, Q = (r) => () => {
+}, L = (r) => () => {
   const { router: e } = u.useContext(r);
   return e;
 };
-var B = function(r) {
-  q(r, []);
-};
-const L = B;
 var V = function(r) {
-  L(function() {
+  T(r, []);
+};
+const _ = V;
+var H = function(r) {
+  _(function() {
     r();
   });
 };
-const O = V, w = "%[a-f0-9]{2}", S = new RegExp("(" + w + ")|([^%]+?)", "gi"), b = new RegExp("(" + w + ")+", "gi");
-function y(r, e) {
+const C = H, $ = "%[a-f0-9]{2}", O = new RegExp("(" + $ + ")|([^%]+?)", "gi"), x = new RegExp("(" + $ + ")+", "gi");
+function h(r, e) {
   try {
     return [decodeURIComponent(r.join(""))];
   } catch {
@@ -33,32 +33,32 @@ function y(r, e) {
     return r;
   e = e || 1;
   const t = r.slice(0, e), n = r.slice(e);
-  return Array.prototype.concat.call([], y(t), y(n));
+  return Array.prototype.concat.call([], h(t), h(n));
 }
-function _(r) {
+function K(r) {
   try {
     return decodeURIComponent(r);
   } catch {
-    let e = r.match(S) || [];
+    let e = r.match(O) || [];
     for (let t = 1; t < e.length; t++)
-      r = y(e, t).join(""), e = r.match(S) || [];
+      r = h(e, t).join(""), e = r.match(O) || [];
     return r;
   }
 }
-function H(r) {
+function P(r) {
   const e = {
     "%FE%FF": "��",
     "%FF%FE": "��"
   };
-  let t = b.exec(r);
+  let t = x.exec(r);
   for (; t; ) {
     try {
       e[t[0]] = decodeURIComponent(t[0]);
     } catch {
-      const c = _(t[0]);
+      const c = K(t[0]);
       c !== t[0] && (e[t[0]] = c);
     }
-    t = b.exec(r);
+    t = x.exec(r);
   }
   e["%C2"] = "�";
   const n = Object.keys(e);
@@ -66,16 +66,16 @@ function H(r) {
     r = r.replace(new RegExp(c, "g"), e[c]);
   return r;
 }
-function K(r) {
+function z(r) {
   if (typeof r != "string")
     throw new TypeError("Expected `encodedURI` to be of type `string`, got `" + typeof r + "`");
   try {
     return decodeURIComponent(r);
   } catch {
-    return H(r);
+    return P(r);
   }
 }
-function C(r, e) {
+function E(r, e) {
   if (!(typeof r == "string" && typeof e == "string"))
     throw new TypeError("Expected the arguments to be of type `string`");
   if (r === "" || e === "")
@@ -86,7 +86,7 @@ function C(r, e) {
     r.slice(t + e.length)
   ];
 }
-function P(r, e) {
+function G(r, e) {
   const t = {};
   if (Array.isArray(e))
     for (const n of e) {
@@ -103,8 +103,8 @@ function P(r, e) {
     }
   return t;
 }
-const k = (r) => r == null, z = (r) => encodeURIComponent(r).replace(/[!'()*]/g, (e) => `%${e.charCodeAt(0).toString(16).toUpperCase()}`), m = Symbol("encodeFragmentIdentifier");
-function G(r) {
+const J = (r) => r == null, W = (r) => encodeURIComponent(r).replace(/[!'()*]/g, (e) => `%${e.charCodeAt(0).toString(16).toUpperCase()}`), F = Symbol("encodeFragmentIdentifier");
+function X(r) {
   switch (r.arrayFormat) {
     case "index":
       return (e) => (t, n) => {
@@ -149,7 +149,7 @@ function G(r) {
       ];
   }
 }
-function J(r) {
+function Y(r) {
   let e;
   switch (r.arrayFormat) {
     case "index":
@@ -216,37 +216,37 @@ function J(r) {
       };
   }
 }
-function $(r) {
+function j(r) {
   if (typeof r != "string" || r.length !== 1)
     throw new TypeError("arrayFormatSeparator must be single character string");
 }
 function o(r, e) {
-  return e.encode ? e.strict ? z(r) : encodeURIComponent(r) : r;
+  return e.encode ? e.strict ? W(r) : encodeURIComponent(r) : r;
 }
 function d(r, e) {
-  return e.decode ? K(r) : r;
+  return e.decode ? z(r) : r;
 }
-function E(r) {
-  return Array.isArray(r) ? r.sort() : typeof r == "object" ? E(Object.keys(r)).sort((e, t) => Number(e) - Number(t)).map((e) => r[e]) : r;
+function R(r) {
+  return Array.isArray(r) ? r.sort() : typeof r == "object" ? R(Object.keys(r)).sort((e, t) => Number(e) - Number(t)).map((e) => r[e]) : r;
 }
-function j(r) {
+function A(r) {
   const e = r.indexOf("#");
   return e !== -1 && (r = r.slice(0, e)), r;
 }
-function W(r) {
+function Z(r) {
   let e = "";
   const t = r.indexOf("#");
   return t !== -1 && (e = r.slice(t)), e;
 }
-function x(r, e) {
+function w(r, e) {
   return e.parseNumbers && !Number.isNaN(Number(r)) && typeof r == "string" && r.trim() !== "" ? r = Number(r) : e.parseBooleans && r !== null && (r.toLowerCase() === "true" || r.toLowerCase() === "false") && (r = r.toLowerCase() === "true"), r;
 }
-function h(r) {
-  r = j(r);
+function p(r) {
+  r = A(r);
   const e = r.indexOf("?");
   return e === -1 ? "" : r.slice(e + 1);
 }
-function F(r, e) {
+function S(r, e) {
   e = {
     decode: !0,
     sort: !0,
@@ -255,29 +255,29 @@ function F(r, e) {
     parseNumbers: !1,
     parseBooleans: !1,
     ...e
-  }, $(e.arrayFormatSeparator);
-  const t = J(e), n = /* @__PURE__ */ Object.create(null);
+  }, j(e.arrayFormatSeparator);
+  const t = Y(e), n = /* @__PURE__ */ Object.create(null);
   if (typeof r != "string" || (r = r.trim().replace(/^[?#&]/, ""), !r))
     return n;
   for (const c of r.split("&")) {
     if (c === "")
       continue;
     const s = e.decode ? c.replace(/\+/g, " ") : c;
-    let [a, f] = C(s, "=");
+    let [a, f] = E(s, "=");
     a === void 0 && (a = s), f = f === void 0 ? null : ["comma", "separator", "bracket-separator"].includes(e.arrayFormat) ? f : d(f, e), t(d(a, e), f, n);
   }
   for (const [c, s] of Object.entries(n))
     if (typeof s == "object" && s !== null)
       for (const [a, f] of Object.entries(s))
-        s[a] = x(f, e);
+        s[a] = w(f, e);
     else
-      n[c] = x(s, e);
+      n[c] = w(s, e);
   return e.sort === !1 ? n : (e.sort === !0 ? Object.keys(n).sort() : Object.keys(n).sort(e.sort)).reduce((c, s) => {
     const a = n[s];
-    return a && typeof a == "object" && !Array.isArray(a) ? c[s] = E(a) : c[s] = a, c;
+    return a && typeof a == "object" && !Array.isArray(a) ? c[s] = R(a) : c[s] = a, c;
   }, /* @__PURE__ */ Object.create(null));
 }
-function R(r, e) {
+function N(r, e) {
   if (!r)
     return "";
   e = {
@@ -286,8 +286,8 @@ function R(r, e) {
     arrayFormat: "none",
     arrayFormatSeparator: ",",
     ...e
-  }, $(e.arrayFormatSeparator);
-  const t = (a) => e.skipNull && k(r[a]) || e.skipEmptyString && r[a] === "", n = G(e), c = {};
+  }, j(e.arrayFormatSeparator);
+  const t = (a) => e.skipNull && J(r[a]) || e.skipEmptyString && r[a] === "", n = X(e), c = {};
   for (const [a, f] of Object.entries(r))
     t(a) || (c[a] = f);
   const s = Object.keys(c);
@@ -296,102 +296,111 @@ function R(r, e) {
     return f === void 0 ? "" : f === null ? o(a, e) : Array.isArray(f) ? f.length === 0 && e.arrayFormat === "bracket-separator" ? o(a, e) + "[]" : f.reduce(n(a), []).join("&") : o(a, e) + "=" + o(f, e);
   }).filter((a) => a.length > 0).join("&");
 }
-function A(r, e) {
+function U(r, e) {
   var c;
   e = {
     decode: !0,
     ...e
   };
-  let [t, n] = C(r, "#");
+  let [t, n] = E(r, "#");
   return t === void 0 && (t = r), {
     url: ((c = t == null ? void 0 : t.split("?")) == null ? void 0 : c[0]) ?? "",
-    query: F(h(r), e),
+    query: S(p(r), e),
     ...e && e.parseFragmentIdentifier && n ? { fragmentIdentifier: d(n, e) } : {}
   };
 }
-function N(r, e) {
+function I(r, e) {
   e = {
     encode: !0,
     strict: !0,
-    [m]: !0,
+    [F]: !0,
     ...e
   };
-  const t = j(r.url).split("?")[0] || "", n = h(r.url), c = {
-    ...F(n, { sort: !1 }),
+  const t = A(r.url).split("?")[0] || "", n = p(r.url), c = {
+    ...S(n, { sort: !1 }),
     ...r.query
   };
-  let s = R(c, e);
+  let s = N(c, e);
   s && (s = `?${s}`);
-  let a = W(r.url);
+  let a = Z(r.url);
   if (r.fragmentIdentifier) {
     const f = new URL(t);
-    f.hash = r.fragmentIdentifier, a = e[m] ? f.hash : `#${r.fragmentIdentifier}`;
+    f.hash = r.fragmentIdentifier, a = e[F] ? f.hash : `#${r.fragmentIdentifier}`;
   }
   return `${t}${s}${a}`;
 }
-function U(r, e, t) {
+function D(r, e, t) {
   t = {
     parseFragmentIdentifier: !0,
-    [m]: !1,
+    [F]: !1,
     ...t
   };
-  const { url: n, query: c, fragmentIdentifier: s } = A(r, t);
-  return N({
+  const { url: n, query: c, fragmentIdentifier: s } = U(r, t);
+  return I({
     url: n,
-    query: P(c, e),
+    query: G(c, e),
     fragmentIdentifier: s
   }, t);
 }
-function X(r, e, t) {
+function k(r, e, t) {
   const n = Array.isArray(e) ? (c) => !e.includes(c) : (c, s) => !e(c, s);
-  return U(r, n, t);
+  return D(r, n, t);
 }
-const Y = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const g = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  exclude: X,
-  extract: h,
-  parse: F,
-  parseUrl: A,
-  pick: U,
-  stringify: R,
-  stringifyUrl: N
-}, Symbol.toStringTag, { value: "Module" })), Z = {
+  exclude: k,
+  extract: p,
+  parse: S,
+  parseUrl: U,
+  pick: D,
+  stringify: N,
+  stringifyUrl: I
+}, Symbol.toStringTag, { value: "Module" })), v = (r) => Object.keys(r).reduce((e, t) => ([null, void 0, ""].includes(r[t]) || (e[t] = r[t]), e), {}), y = {
   arrayFormat: "bracket",
   parseBooleans: !0
-}, I = (r) => Y.parse(r, Z), v = (r) => (e, t) => {
-  const { go: n, location: c } = u.useContext(r), s = u.useMemo(() => c ? I(c.search)[e] : void 0, [c, e]), a = u.useCallback((f) => {
+}, nr = (r, e) => {
+  const t = g.parse(r, y), n = v({
+    ...t,
+    ...e
+  });
+  return g.stringify(n, y);
+}, cr = (r, e) => {
+  const t = g.parse(r), n = Object.keys(t).reduce((c, s) => (e.includes(s) || (c[s] = t[s]), c), {});
+  return g.stringify(n, y);
+}, M = (r) => g.parse(r, y), rr = (r) => (e, t) => {
+  const { go: n, location: c } = u.useContext(r), s = u.useMemo(() => c ? M(c.search)[e] : void 0, [c, e]), a = u.useCallback((f) => {
     n({ [e]: f });
   }, [n, e]);
-  return O(() => {
+  return C(() => {
     !s && t && n({ [e]: t }, !0);
   }), [
     s,
     a
   ];
-}, rr = (r) => (e, t, n = 500) => {
+}, er = (r) => (e, t, n = 500) => {
   const { go: c, location: s } = u.useContext(r), a = u.useRef(), f = u.useMemo(() => {
-    const g = s ? I(s.search)[e] : void 0;
-    return Array.isArray(g) ? g[0] : g;
-  }, [s, e]), [i, l] = u.useState(f), p = u.useCallback(() => {
+    const m = s ? M(s.search)[e] : void 0;
+    return Array.isArray(m) ? m[0] : m;
+  }, [s, e]), [i, l] = u.useState(f), b = u.useCallback(() => {
     c({ [e]: i });
   }, [c, e, i]);
   return u.useEffect(
     () => (f !== i && (a.current = window.setTimeout(() => {
-      p();
+      b();
     }, n)), () => {
       window.clearTimeout(a.current);
     }),
-    [p, n, f, i]
+    [b, n, f, i]
   ), u.useEffect(() => {
     l(f);
-  }, [f]), O(() => {
+  }, [f]), C(() => {
     !i && t && (c({ [e]: t }, !0), l(t));
   }), [
     i,
     f,
     l
   ];
-}, D = (r, e, t = "") => {
+}, Q = (r, e, t = "") => {
   if (typeof e == "string") {
     const c = `${t}${e}`;
     return {
@@ -413,7 +422,7 @@ const Y = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
       return {
         path: a,
         go: (f, i = !1) => r(a, f, i),
-        ...M(r, s.routes, a)
+        ...q(r, s.routes, a)
       };
     };
   const n = `${t}${e.path}`;
@@ -422,14 +431,14 @@ const Y = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     go: (c, s = !1) => r(n, c, s),
     ...Object.keys(e.routes).reduce((c, s) => ({
       ...c,
-      [s]: D(r, e.routes[s], n)
+      [s]: Q(r, e.routes[s], n)
     }), {})
   };
-}, M = (r, e, t = "") => Object.keys(e).reduce((n, c) => ({
+}, q = (r, e, t = "") => Object.keys(e).reduce((n, c) => ({
   ...n,
-  [c]: D(r, e[c], t)
-}), {}), tr = (r, e) => {
-  const t = T(r, e), n = Q(t), c = v(t), s = rr(t);
+  [c]: Q(r, e[c], t)
+}), {}), sr = (r, e) => {
+  const t = B(r, e), n = L(t), c = rr(t), s = er(t);
   return {
     RoutingContext: t,
     useRouter: n,
@@ -438,6 +447,10 @@ const Y = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   };
 };
 export {
-  M as generateRoutes,
-  tr as generateRouting
+  nr as addQuery,
+  q as generateRoutes,
+  sr as generateRouting,
+  M as parseQuery,
+  y as queryStringOptions,
+  cr as removeQuery
 };
