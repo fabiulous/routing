@@ -1,5 +1,6 @@
 {
-  "name": "routing",
+  "name": "@fabiulous/routing",
+  "description": "Generates a typed routing mechanist based on a config",
   "private": false,
   "version": "0.1.0",
   "type": "module",
@@ -45,7 +46,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:fabiulous/routing.git"
+    "url": "git+ssh://git@github.com/fabiulous/routing.git"
+
   },
   "author": "Fabio Santos",
   "license": "ISC",
@@ -53,5 +55,10 @@
     "url": "https://github.com/fabiulous/routing/issues"
   },
   "homepage": "https://github.com/fabiulous/routing",
-  "description": ""
+  "keywords": [
+    "routing",
+    "typescript",
+    "react",
+    "router"
+  ]
 }
