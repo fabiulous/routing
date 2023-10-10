@@ -1,4 +1,19 @@
 
+<div align="center">
+
+[![npm downloads](https://img.shields.io/npm/dt/@fabiulous/routing?style=for-the-badge)](https://www.npmjs.com/package/@fabiulous/routing)
+[![GitHub](https://img.shields.io/github/license/fabiulous/routing?style=for-the-badge)](https://github.com/fabiulous/routing/blob/main/LICENSE)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/fabiulous/routing/node.js.yml?style=for-the-badge)
+
+
+</div>
+
+### Install
+
+`npm install @fabiulous/routing`
+or
+`yarn add @fabiulous/routing`
+
 ### Config
 
 ```ts
