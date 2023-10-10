@@ -440,6 +440,7 @@ const l = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
 export {
   p as RoutingContext,
   rr as addQuery,
+  E as generateRouter,
   Q as parseQuery,
   g as queryStringOptions,
   er as removeQuery,
