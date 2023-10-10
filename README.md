@@ -71,7 +71,7 @@ export const RoutingProvider: React.FC<React.PropsWithChildren> = ({ children })
   const navigate = useNavigate();
   const location = useLocation();
 
-  const go = React.useCallback((pathname: string, params: CVT.Maybe<Record<string, unknown>>, replace: boolean = false) => {
+  const go = React.useCallback((pathname: string, params?: Record<string, unknown>>, replace: boolean = false) => {
     navigate({
       pathname,
       search: params && addQuery(window.location.search, params),
@@ -86,7 +86,7 @@ export const RoutingProvider: React.FC<React.PropsWithChildren> = ({ children })
     <RoutingContext.Provider value={{
       router,
       location,
-      go: (params: CVT.Maybe<Record<string, unknown>>, replace?: boolean) => go(location.pathname, params, replace),
+      go: (params?: Record<string, unknown>, replace?: boolean) => go(location.pathname, params, replace),
     }}>
       {children}
     </RoutingContext.Provider>
