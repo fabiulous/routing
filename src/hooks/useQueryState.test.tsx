@@ -1,11 +1,13 @@
 import { expect, vi, describe, test } from "vitest";
-import { act, renderHook } from '@testing-library/react'
-import { useQueryState } from './useQueryState'
+import { act, renderHook } from '@testing-library/react';
+
 import { routes } from '../tests/mocks';
-import { RoutingContext } from '../context/RoutingContext';
-import { generateRouter } from "../routing";
+import { generateRoutes, generateRouting } from '..';
 
 const customFunction: (path: string, params: any, replace?: boolean | undefined) => void = vi.fn((() => {}));
+
+const { RoutingContext, useQueryState } = generateRouting(customFunction, routes);
+const router = generateRoutes(customFunction, routes);
 
 const wrapper = ({ children }: any) => {
   Object.defineProperty(window.location, 'search', {
@@ -13,7 +15,6 @@ const wrapper = ({ children }: any) => {
     value: '?name=Test'
   });
 
-  const router = generateRouter(customFunction, routes);
 
   return (
     <RoutingContext.Provider value={{

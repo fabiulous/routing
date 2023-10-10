@@ -1,11 +1,11 @@
-import { generateRouter } from '../src/routing'
+import { generateRoutes } from '../src/routing'
 import { describe, expect, test, vi } from 'vitest'
 import { routes } from './tests/mocks';
 
 const customFunction = vi.fn(() => {})
 
 describe('generateRouter testing', () => {
-  const result = generateRouter(customFunction, routes);
+  const result = generateRoutes(customFunction, routes);
 
   test('Route paths', () => {
     expect(result.home.path).toBe('/')

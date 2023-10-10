@@ -11,8 +11,8 @@ export declare namespace Routing {
         search: string;
         hash: string;
     };
-    type ContextProps<T extends Routing.Config> = {
-        router: Routing.RecursiveRoutes<T>;
+    type ContextProps<T> = {
+        router: T;
         location: Maybe<Routing.Location>;
         go: (params?: Record<string, unknown>, replace?: boolean) => void;
     };
@@ -24,6 +24,7 @@ export declare namespace Routing {
     type SimpleFunctionRoute = (...args: any[]) => PathRoute;
     type ComplexFunctionRoute = (...args: any[]) => ComplexRoute;
     type Routes = PathRoute | SimpleFunctionRoute | ComplexRoute | ComplexFunctionRoute;
+    type ConfigFn = (path: string, params: Maybe<Routing.RouteParams>, replace?: boolean) => void;
     interface Config extends Record<string, PathRoute | ComplexRoute> {
     }
     type RouteParams = Record<string, unknown>;
@@ -31,7 +32,7 @@ export declare namespace Routing {
         path: string;
         go(params?: RouteParams, replace?: boolean): void;
     };
-    type RecursiveRoutes<T extends Config | Record<string, Routes> = any> = {
+    type RecursiveRoutes<T extends Config | Record<string, Routes>> = {
         [K in keyof T]: T[K] extends PathRoute ? Route : T[K] extends ComplexRoute ? Route & RecursiveRoutes<T[K]['routes']> : T[K] extends SimpleFunctionRoute ? (...args: Parameters<T[K]>) => Route : T[K] extends ComplexFunctionRoute ? (...args: Parameters<T[K]>) => RecursiveRoutes<ReturnType<T[K]>['routes']> & Route : never;
     };
 }
