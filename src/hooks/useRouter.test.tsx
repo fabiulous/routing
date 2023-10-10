@@ -1,11 +1,13 @@
 import { expect, vi, describe, test } from "vitest";
 import { renderHook } from '@testing-library/react'
-import { useRouter } from './useRouter'
-import { routes } from '../tests/mocks';
-import { RoutingContext } from '../context/RoutingContext';
-import { generateRouter } from "../routing";
 
-const customFunction = vi.fn((() => {}));
+import { routes } from '../tests/mocks';
+import { generateRoutes, generateRouting } from '..';
+
+const customFunction: (path: string, params: any, replace?: boolean | undefined) => void = vi.fn((() => {}));
+
+const { RoutingContext, useRouter } = generateRouting(customFunction, routes);
+const router = generateRoutes(customFunction, routes);
 
 const wrapper = ({ children }: any) => {
   Object.defineProperty(window.location, 'search', {
@@ -13,13 +15,11 @@ const wrapper = ({ children }: any) => {
     value: '?name=Test'
   });
 
-  const router = generateRouter(customFunction, routes);
-
   return (
     <RoutingContext.Provider value={{
       router,
       location: window.location,
-      go: customFunction,
+      go: (params, replace) => customFunction(window.location.pathname, params, replace),
     }}>
       {children}
     </RoutingContext.Provider>
@@ -31,11 +31,9 @@ describe('useRouter', () => {
   test('Should return generated router', () => {
     const { result } = renderHook(() => useRouter(), { wrapper });
 
-    const router = generateRouter(customFunction, routes);
+    const router = generateRoutes(customFunction, routes);
   
-    // @ts-ignore
     expect(result.current.home.path).toBe(router.home.path);
-    // @ts-ignore
     expect(result.current.auth.login.path).toBe(router.auth.login.path);
   })
 });

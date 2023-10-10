@@ -1,7 +1,7 @@
-import React from 'react';
+import { Maybe, Routing } from './types';
 
 
-const generateRoute = <T extends Fabiulous.Routing.Routes> (fn: (path: string, params: Fabiulous.Maybe<Fabiulous.Routing.RouteParams>, replace?: boolean) => void, route: T, basePath: string = ''): Fabiulous.Routing.Route | ((...args: (string | number)[]) => Fabiulous.Routing.Route) => {
+const generateRoute = <T extends Routing.Routes> (fn: (path: string, params: Maybe<Routing.RouteParams>, replace?: boolean) => void, route: T, basePath: string = ''): Routing.Route | ((...args: (string | number)[]) => Routing.Route) => {
   if (typeof route === 'string') {
     const path = `${basePath}${route}`;
     return {
@@ -25,7 +25,7 @@ const generateRoute = <T extends Fabiulous.Routing.Routes> (fn: (path: string, p
       return {
         path,
         go: (params, replace = false) => fn(path, params, replace),
-        ...generateRouter(fn, routeResult.routes, path),
+        ...generateRoutes(fn, routeResult.routes, path),
       };
     };
   }
@@ -43,23 +43,9 @@ const generateRoute = <T extends Fabiulous.Routing.Routes> (fn: (path: string, p
 };
 
 
-export const generateRouter = <T extends Fabiulous.Routing.Config | Record<string, Fabiulous.Routing.Routes>> (fn: (path: string, params: Fabiulous.Maybe<Fabiulous.Routing.RouteParams>, replace?: boolean) => void, routes: T, basePath: string = ''): Fabiulous.Routing.RecursiveRoutes<T> => {
+export const generateRoutes = <T extends Routing.Config | Record<string, Routing.Routes>> (fn: (path: string, params: Maybe<Routing.RouteParams>, replace?: boolean) => void, routes: T, basePath: string = ''): Routing.RecursiveRoutes<T> => {
   return Object.keys(routes).reduce((prev, curr) => ({
     ...prev,
     [curr]: generateRoute(fn, routes[curr], basePath),
   }), {} as any);
 };
-
-
-export const createRoutingContext = <T extends Fabiulous.Routing.Config> (
-  routes: T,
-  location: Location,
-  go: (pathname: string, params: Fabiulous.Maybe<Fabiulous.Routing.RouteParams>, replace: Fabiulous.Maybe<boolean>) => void,
-) => {
-  const router = generateRouter(go, routes);
-  return React.createContext<Fabiulous.Routing.ContextProps<T>>({
-    router,
-    location: undefined,
-    go: (params, replace) => go(location.pathname, params, replace),
-  });
-}

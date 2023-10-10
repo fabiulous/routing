@@ -1,19 +1,19 @@
 import { expect, vi, describe, test, beforeEach } from "vitest";
-import { act, renderHook } from '@testing-library/react'
-import { useDebouncedQueryState } from './useDebouncedQueryState'
+import { act, renderHook } from '@testing-library/react';
+
 import { routes } from '../tests/mocks';
-import { RoutingContext } from '../context/RoutingContext';
-import { generateRouter } from "../routing";
+import { generateRoutes, generateRouting } from '..';
 
 const customFunction: (path: string, params: any, replace?: boolean | undefined) => void = vi.fn((() => {}));
+
+const { RoutingContext, useDebouncedQueryState } = generateRouting(customFunction, routes);
+const router = generateRoutes(customFunction, routes);
 
 const wrapper = ({ children }: any) => {
   Object.defineProperty(window.location, 'search', {
     writable: true,
     value: '?name=Test'
   });
-
-  const router = generateRouter(customFunction, routes);
 
   return (
     <RoutingContext.Provider value={{

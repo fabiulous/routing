@@ -1,8 +1,10 @@
 import React from 'react';
 
-import { RoutingContext } from '../context/RoutingContext';
+import { Routing } from '../types';
 
-export const useRouter = () => {
-  const { router } = React.useContext(RoutingContext);
-  return router;
-};
+export const generateUseRouter = <T extends Routing.Config>(context: React.Context<Routing.ContextProps<Routing.RecursiveRoutes<T>>>) => {
+  return () => {
+    const { router } = React.useContext(context);
+    return router;
+  };
+}

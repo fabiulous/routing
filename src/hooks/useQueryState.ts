@@ -2,26 +2,29 @@ import React from 'react';
 import { useMount } from 'react-use';
 
 import { parseQuery } from '../helpers/query';
-import { RoutingContext } from '../context/RoutingContext';
+import { Maybe, MaybeNull, Routing } from '../types';
 
-export const useQueryState = <T = string>(name: string, defaultValue?: T): [Fabiulous.Maybe<T>, (value?: Fabiulous.MaybeNull<T>) => void] => {
-  const { go, location } = React.useContext(RoutingContext);
 
-  const value = React.useMemo(() => location ? parseQuery(location.search)[name] as Fabiulous.Maybe<T> : undefined, [location, name]);
+export const generateUseQueryState = <T extends Routing.Config>(context: React.Context<Routing.ContextProps<Routing.RecursiveRoutes<T>>>) => {
+  return <T = string>(name: string, defaultValue?: T): [Maybe<T>, (value?: MaybeNull<T>) => void] => {
+    const { go, location } = React.useContext(context);
 
-  const setValue = React.useCallback((value?: Fabiulous.MaybeNull<T>) => {
-    go({ [name]: value });
-  }, [go, name]);
-  
+    const value = React.useMemo(() => location ? parseQuery(location.search)[name] as Maybe<T> : undefined, [location, name]);
 
-  useMount(() => {
-    if (!value && defaultValue) {
-      go({ [name]: defaultValue }, true);
-    }
-  });
+    const setValue = React.useCallback((value?: MaybeNull<T>) => {
+      go({ [name]: value });
+    }, [go, name]);
+    
 
-  return [
-    value,
-    setValue,
-  ];
-};
+    useMount(() => {
+      if (!value && defaultValue) {
+        go({ [name]: defaultValue }, true);
+      }
+    });
+
+    return [
+      value,
+      setValue,
+    ];
+  };
+}

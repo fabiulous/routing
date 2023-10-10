@@ -1,57 +1,21 @@
-import o, { useEffect as T } from "react";
-const $ = (r, e, t = "") => {
-  if (typeof e == "string") {
-    const c = `${t}${e}`;
-    return {
-      path: c,
-      go: (s, f = !1) => r(c, s, f)
-    };
-  }
-  if (typeof e == "function")
-    return (c) => {
-      const s = e(c);
-      if (typeof s == "string") {
-        const a = `${t}${s}`;
-        return {
-          path: a,
-          go: (u, y = !1) => r(a, u, y)
-        };
-      }
-      const f = `${t}${s.path}`;
-      return {
-        path: f,
-        go: (a, u = !1) => r(f, a, u),
-        ...E(r, s.routes, f)
-      };
-    };
-  const n = `${t}${e.path}`;
-  return {
-    path: n,
-    go: (c, s = !1) => r(n, c, s),
-    ...Object.keys(e.routes).reduce((c, s) => ({
-      ...c,
-      [s]: $(r, e.routes[s], n)
-    }), {})
-  };
-}, E = (r, e, t = "") => Object.keys(e).reduce((n, c) => ({
-  ...n,
-  [c]: $(r, e[c], t)
-}), {}), p = o.createContext({
-  router: E(() => {
-  }, {}),
-  location: {
-    pathname: window.location.pathname,
-    search: "",
-    hash: ""
-  },
-  go: () => {
-  }
-}), v = () => {
-  const { router: r } = o.useContext(p);
-  return r;
+import u, { useEffect as q } from "react";
+const T = (r, e) => {
+  const t = M(r, e);
+  return u.createContext({
+    router: t,
+    location: {
+      pathname: window.location.pathname,
+      search: "",
+      hash: ""
+    },
+    go: (c, s) => r(window.location.pathname, c, s)
+  });
+}, Q = (r) => () => {
+  const { router: e } = u.useContext(r);
+  return e;
 };
 var B = function(r) {
-  T(r, []);
+  q(r, []);
 };
 const L = B;
 var V = function(r) {
@@ -59,8 +23,8 @@ var V = function(r) {
     r();
   });
 };
-const C = V, j = "%[a-f0-9]{2}", b = new RegExp("(" + j + ")|([^%]+?)", "gi"), x = new RegExp("(" + j + ")+", "gi");
-function h(r, e) {
+const O = V, w = "%[a-f0-9]{2}", S = new RegExp("(" + w + ")|([^%]+?)", "gi"), b = new RegExp("(" + w + ")+", "gi");
+function y(r, e) {
   try {
     return [decodeURIComponent(r.join(""))];
   } catch {
@@ -69,15 +33,15 @@ function h(r, e) {
     return r;
   e = e || 1;
   const t = r.slice(0, e), n = r.slice(e);
-  return Array.prototype.concat.call([], h(t), h(n));
+  return Array.prototype.concat.call([], y(t), y(n));
 }
 function _(r) {
   try {
     return decodeURIComponent(r);
   } catch {
-    let e = r.match(b) || [];
+    let e = r.match(S) || [];
     for (let t = 1; t < e.length; t++)
-      r = h(e, t).join(""), e = r.match(b) || [];
+      r = y(e, t).join(""), e = r.match(S) || [];
     return r;
   }
 }
@@ -86,7 +50,7 @@ function H(r) {
     "%FE%FF": "��",
     "%FF%FE": "��"
   };
-  let t = x.exec(r);
+  let t = b.exec(r);
   for (; t; ) {
     try {
       e[t[0]] = decodeURIComponent(t[0]);
@@ -94,7 +58,7 @@ function H(r) {
       const c = _(t[0]);
       c !== t[0] && (e[t[0]] = c);
     }
-    t = x.exec(r);
+    t = b.exec(r);
   }
   e["%C2"] = "�";
   const n = Object.keys(e);
@@ -111,7 +75,7 @@ function K(r) {
     return H(r);
   }
 }
-function A(r, e) {
+function C(r, e) {
   if (!(typeof r == "string" && typeof e == "string"))
     throw new TypeError("Expected the arguments to be of type `string`");
   if (r === "" || e === "")
@@ -139,53 +103,53 @@ function P(r, e) {
     }
   return t;
 }
-const z = (r) => r == null, G = (r) => encodeURIComponent(r).replace(/[!'()*]/g, (e) => `%${e.charCodeAt(0).toString(16).toUpperCase()}`), F = Symbol("encodeFragmentIdentifier");
-function J(r) {
+const k = (r) => r == null, z = (r) => encodeURIComponent(r).replace(/[!'()*]/g, (e) => `%${e.charCodeAt(0).toString(16).toUpperCase()}`), m = Symbol("encodeFragmentIdentifier");
+function G(r) {
   switch (r.arrayFormat) {
     case "index":
       return (e) => (t, n) => {
         const c = t.length;
         return n === void 0 || r.skipNull && n === null || r.skipEmptyString && n === "" ? t : n === null ? [
           ...t,
-          [i(e, r), "[", c, "]"].join("")
+          [o(e, r), "[", c, "]"].join("")
         ] : [
           ...t,
-          [i(e, r), "[", i(c, r), "]=", i(n, r)].join("")
+          [o(e, r), "[", o(c, r), "]=", o(n, r)].join("")
         ];
       };
     case "bracket":
       return (e) => (t, n) => n === void 0 || r.skipNull && n === null || r.skipEmptyString && n === "" ? t : n === null ? [
         ...t,
-        [i(e, r), "[]"].join("")
+        [o(e, r), "[]"].join("")
       ] : [
         ...t,
-        [i(e, r), "[]=", i(n, r)].join("")
+        [o(e, r), "[]=", o(n, r)].join("")
       ];
     case "colon-list-separator":
       return (e) => (t, n) => n === void 0 || r.skipNull && n === null || r.skipEmptyString && n === "" ? t : n === null ? [
         ...t,
-        [i(e, r), ":list="].join("")
+        [o(e, r), ":list="].join("")
       ] : [
         ...t,
-        [i(e, r), ":list=", i(n, r)].join("")
+        [o(e, r), ":list=", o(n, r)].join("")
       ];
     case "comma":
     case "separator":
     case "bracket-separator": {
       const e = r.arrayFormat === "bracket-separator" ? "[]=" : "=";
-      return (t) => (n, c) => c === void 0 || r.skipNull && c === null || r.skipEmptyString && c === "" ? n : (c = c === null ? "" : c, n.length === 0 ? [[i(t, r), e, i(c, r)].join("")] : [[n, i(c, r)].join(r.arrayFormatSeparator)]);
+      return (t) => (n, c) => c === void 0 || r.skipNull && c === null || r.skipEmptyString && c === "" ? n : (c = c === null ? "" : c, n.length === 0 ? [[o(t, r), e, o(c, r)].join("")] : [[n, o(c, r)].join(r.arrayFormatSeparator)]);
     }
     default:
       return (e) => (t, n) => n === void 0 || r.skipNull && n === null || r.skipEmptyString && n === "" ? t : n === null ? [
         ...t,
-        i(e, r)
+        o(e, r)
       ] : [
         ...t,
-        [i(e, r), "=", i(n, r)].join("")
+        [o(e, r), "=", o(n, r)].join("")
       ];
   }
 }
-function W(r) {
+function J(r) {
   let e;
   switch (r.arrayFormat) {
     case "index":
@@ -223,10 +187,10 @@ function W(r) {
     case "comma":
     case "separator":
       return (t, n, c) => {
-        const s = typeof n == "string" && n.includes(r.arrayFormatSeparator), f = typeof n == "string" && !s && d(n, r).includes(r.arrayFormatSeparator);
-        n = f ? d(n, r) : n;
-        const a = s || f ? n.split(r.arrayFormatSeparator).map((u) => d(u, r)) : n === null ? n : d(n, r);
-        c[t] = a;
+        const s = typeof n == "string" && n.includes(r.arrayFormatSeparator), a = typeof n == "string" && !s && d(n, r).includes(r.arrayFormatSeparator);
+        n = a ? d(n, r) : n;
+        const f = s || a ? n.split(r.arrayFormatSeparator).map((i) => d(i, r)) : n === null ? n : d(n, r);
+        c[t] = f;
       };
     case "bracket-separator":
       return (t, n, c) => {
@@ -235,12 +199,12 @@ function W(r) {
           c[t] = n && d(n, r);
           return;
         }
-        const f = n === null ? [] : n.split(r.arrayFormatSeparator).map((a) => d(a, r));
+        const a = n === null ? [] : n.split(r.arrayFormatSeparator).map((f) => d(f, r));
         if (c[t] === void 0) {
-          c[t] = f;
+          c[t] = a;
           return;
         }
-        c[t] = [...c[t], ...f];
+        c[t] = [...c[t], ...a];
       };
     default:
       return (t, n, c) => {
@@ -252,37 +216,37 @@ function W(r) {
       };
   }
 }
-function R(r) {
+function $(r) {
   if (typeof r != "string" || r.length !== 1)
     throw new TypeError("arrayFormatSeparator must be single character string");
 }
-function i(r, e) {
-  return e.encode ? e.strict ? G(r) : encodeURIComponent(r) : r;
+function o(r, e) {
+  return e.encode ? e.strict ? z(r) : encodeURIComponent(r) : r;
 }
 function d(r, e) {
   return e.decode ? K(r) : r;
 }
-function N(r) {
-  return Array.isArray(r) ? r.sort() : typeof r == "object" ? N(Object.keys(r)).sort((e, t) => Number(e) - Number(t)).map((e) => r[e]) : r;
+function E(r) {
+  return Array.isArray(r) ? r.sort() : typeof r == "object" ? E(Object.keys(r)).sort((e, t) => Number(e) - Number(t)).map((e) => r[e]) : r;
 }
-function I(r) {
+function j(r) {
   const e = r.indexOf("#");
   return e !== -1 && (r = r.slice(0, e)), r;
 }
-function X(r) {
+function W(r) {
   let e = "";
   const t = r.indexOf("#");
   return t !== -1 && (e = r.slice(t)), e;
 }
-function w(r, e) {
+function x(r, e) {
   return e.parseNumbers && !Number.isNaN(Number(r)) && typeof r == "string" && r.trim() !== "" ? r = Number(r) : e.parseBooleans && r !== null && (r.toLowerCase() === "true" || r.toLowerCase() === "false") && (r = r.toLowerCase() === "true"), r;
 }
-function O(r) {
-  r = I(r);
+function h(r) {
+  r = j(r);
   const e = r.indexOf("?");
   return e === -1 ? "" : r.slice(e + 1);
 }
-function S(r, e) {
+function F(r, e) {
   e = {
     decode: !0,
     sort: !0,
@@ -291,29 +255,29 @@ function S(r, e) {
     parseNumbers: !1,
     parseBooleans: !1,
     ...e
-  }, R(e.arrayFormatSeparator);
-  const t = W(e), n = /* @__PURE__ */ Object.create(null);
+  }, $(e.arrayFormatSeparator);
+  const t = J(e), n = /* @__PURE__ */ Object.create(null);
   if (typeof r != "string" || (r = r.trim().replace(/^[?#&]/, ""), !r))
     return n;
   for (const c of r.split("&")) {
     if (c === "")
       continue;
     const s = e.decode ? c.replace(/\+/g, " ") : c;
-    let [f, a] = A(s, "=");
-    f === void 0 && (f = s), a = a === void 0 ? null : ["comma", "separator", "bracket-separator"].includes(e.arrayFormat) ? a : d(a, e), t(d(f, e), a, n);
+    let [a, f] = C(s, "=");
+    a === void 0 && (a = s), f = f === void 0 ? null : ["comma", "separator", "bracket-separator"].includes(e.arrayFormat) ? f : d(f, e), t(d(a, e), f, n);
   }
   for (const [c, s] of Object.entries(n))
     if (typeof s == "object" && s !== null)
-      for (const [f, a] of Object.entries(s))
-        s[f] = w(a, e);
+      for (const [a, f] of Object.entries(s))
+        s[a] = x(f, e);
     else
-      n[c] = w(s, e);
+      n[c] = x(s, e);
   return e.sort === !1 ? n : (e.sort === !0 ? Object.keys(n).sort() : Object.keys(n).sort(e.sort)).reduce((c, s) => {
-    const f = n[s];
-    return f && typeof f == "object" && !Array.isArray(f) ? c[s] = N(f) : c[s] = f, c;
+    const a = n[s];
+    return a && typeof a == "object" && !Array.isArray(a) ? c[s] = E(a) : c[s] = a, c;
   }, /* @__PURE__ */ Object.create(null));
 }
-function U(r, e) {
+function R(r, e) {
   if (!r)
     return "";
   e = {
@@ -322,129 +286,158 @@ function U(r, e) {
     arrayFormat: "none",
     arrayFormatSeparator: ",",
     ...e
-  }, R(e.arrayFormatSeparator);
-  const t = (f) => e.skipNull && z(r[f]) || e.skipEmptyString && r[f] === "", n = J(e), c = {};
-  for (const [f, a] of Object.entries(r))
-    t(f) || (c[f] = a);
+  }, $(e.arrayFormatSeparator);
+  const t = (a) => e.skipNull && k(r[a]) || e.skipEmptyString && r[a] === "", n = G(e), c = {};
+  for (const [a, f] of Object.entries(r))
+    t(a) || (c[a] = f);
   const s = Object.keys(c);
-  return e.sort !== !1 && s.sort(e.sort), s.map((f) => {
-    const a = r[f];
-    return a === void 0 ? "" : a === null ? i(f, e) : Array.isArray(a) ? a.length === 0 && e.arrayFormat === "bracket-separator" ? i(f, e) + "[]" : a.reduce(n(f), []).join("&") : i(f, e) + "=" + i(a, e);
-  }).filter((f) => f.length > 0).join("&");
+  return e.sort !== !1 && s.sort(e.sort), s.map((a) => {
+    const f = r[a];
+    return f === void 0 ? "" : f === null ? o(a, e) : Array.isArray(f) ? f.length === 0 && e.arrayFormat === "bracket-separator" ? o(a, e) + "[]" : f.reduce(n(a), []).join("&") : o(a, e) + "=" + o(f, e);
+  }).filter((a) => a.length > 0).join("&");
 }
-function D(r, e) {
+function A(r, e) {
   var c;
   e = {
     decode: !0,
     ...e
   };
-  let [t, n] = A(r, "#");
+  let [t, n] = C(r, "#");
   return t === void 0 && (t = r), {
     url: ((c = t == null ? void 0 : t.split("?")) == null ? void 0 : c[0]) ?? "",
-    query: S(O(r), e),
+    query: F(h(r), e),
     ...e && e.parseFragmentIdentifier && n ? { fragmentIdentifier: d(n, e) } : {}
   };
 }
-function M(r, e) {
+function N(r, e) {
   e = {
     encode: !0,
     strict: !0,
-    [F]: !0,
+    [m]: !0,
     ...e
   };
-  const t = I(r.url).split("?")[0] || "", n = O(r.url), c = {
-    ...S(n, { sort: !1 }),
+  const t = j(r.url).split("?")[0] || "", n = h(r.url), c = {
+    ...F(n, { sort: !1 }),
     ...r.query
   };
-  let s = U(c, e);
+  let s = R(c, e);
   s && (s = `?${s}`);
-  let f = X(r.url);
+  let a = W(r.url);
   if (r.fragmentIdentifier) {
-    const a = new URL(t);
-    a.hash = r.fragmentIdentifier, f = e[F] ? a.hash : `#${r.fragmentIdentifier}`;
+    const f = new URL(t);
+    f.hash = r.fragmentIdentifier, a = e[m] ? f.hash : `#${r.fragmentIdentifier}`;
   }
-  return `${t}${s}${f}`;
+  return `${t}${s}${a}`;
 }
-function q(r, e, t) {
+function U(r, e, t) {
   t = {
     parseFragmentIdentifier: !0,
-    [F]: !1,
+    [m]: !1,
     ...t
   };
-  const { url: n, query: c, fragmentIdentifier: s } = D(r, t);
-  return M({
+  const { url: n, query: c, fragmentIdentifier: s } = A(r, t);
+  return N({
     url: n,
     query: P(c, e),
     fragmentIdentifier: s
   }, t);
 }
-function Y(r, e, t) {
+function X(r, e, t) {
   const n = Array.isArray(e) ? (c) => !e.includes(c) : (c, s) => !e(c, s);
-  return q(r, n, t);
+  return U(r, n, t);
 }
-const l = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Y = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  exclude: Y,
-  extract: O,
-  parse: S,
-  parseUrl: D,
-  pick: q,
-  stringify: U,
-  stringifyUrl: M
-}, Symbol.toStringTag, { value: "Module" })), Z = (r) => Object.keys(r).reduce((e, t) => ([null, void 0, ""].includes(r[t]) || (e[t] = r[t]), e), {}), g = {
+  exclude: X,
+  extract: h,
+  parse: F,
+  parseUrl: A,
+  pick: U,
+  stringify: R,
+  stringifyUrl: N
+}, Symbol.toStringTag, { value: "Module" })), Z = {
   arrayFormat: "bracket",
   parseBooleans: !0
-}, rr = (r, e) => {
-  const t = l.parse(r, g), n = Z({
-    ...t,
-    ...e
-  });
-  return l.stringify(n, g);
-}, er = (r, e) => {
-  const t = l.parse(r), n = Object.keys(t).reduce((c, s) => (e.includes(s) || (c[s] = t[s]), c), {});
-  return l.stringify(n, g);
-}, Q = (r) => l.parse(r, g), tr = (r, e) => {
-  const { go: t, location: n } = o.useContext(p), c = o.useMemo(() => n ? Q(n.search)[r] : void 0, [n, r]), s = o.useCallback((f) => {
-    t({ [r]: f });
-  }, [t, r]);
-  return C(() => {
-    !c && e && t({ [r]: e }, !0);
+}, I = (r) => Y.parse(r, Z), v = (r) => (e, t) => {
+  const { go: n, location: c } = u.useContext(r), s = u.useMemo(() => c ? I(c.search)[e] : void 0, [c, e]), a = u.useCallback((f) => {
+    n({ [e]: f });
+  }, [n, e]);
+  return O(() => {
+    !s && t && n({ [e]: t }, !0);
   }), [
-    c,
-    s
+    s,
+    a
   ];
-}, nr = (r, e, t = 500) => {
-  const { location: n, go: c } = o.useContext(p), s = o.useRef(), f = o.useMemo(() => {
-    const m = n ? Q(n.search)[r] : void 0;
-    return Array.isArray(m) ? m[0] : m;
-  }, [n, r]), [a, u] = o.useState(f), y = o.useCallback(() => {
-    c({ [r]: a });
-  }, [c, r, a]);
-  return o.useEffect(
-    () => (f !== a && (s.current = window.setTimeout(() => {
-      y();
-    }, t)), () => {
-      window.clearTimeout(s.current);
+}, rr = (r) => (e, t, n = 500) => {
+  const { go: c, location: s } = u.useContext(r), a = u.useRef(), f = u.useMemo(() => {
+    const g = s ? I(s.search)[e] : void 0;
+    return Array.isArray(g) ? g[0] : g;
+  }, [s, e]), [i, l] = u.useState(f), p = u.useCallback(() => {
+    c({ [e]: i });
+  }, [c, e, i]);
+  return u.useEffect(
+    () => (f !== i && (a.current = window.setTimeout(() => {
+      p();
+    }, n)), () => {
+      window.clearTimeout(a.current);
     }),
-    [y, t, f, a]
-  ), o.useEffect(() => {
-    u(f);
-  }, [f]), C(() => {
-    !a && e && (c({ [r]: e }, !0), u(e));
+    [p, n, f, i]
+  ), u.useEffect(() => {
+    l(f);
+  }, [f]), O(() => {
+    !i && t && (c({ [e]: t }, !0), l(t));
   }), [
-    a,
+    i,
     f,
-    u
+    l
   ];
+}, D = (r, e, t = "") => {
+  if (typeof e == "string") {
+    const c = `${t}${e}`;
+    return {
+      path: c,
+      go: (s, a = !1) => r(c, s, a)
+    };
+  }
+  if (typeof e == "function")
+    return (c) => {
+      const s = e(c);
+      if (typeof s == "string") {
+        const f = `${t}${s}`;
+        return {
+          path: f,
+          go: (i, l = !1) => r(f, i, l)
+        };
+      }
+      const a = `${t}${s.path}`;
+      return {
+        path: a,
+        go: (f, i = !1) => r(a, f, i),
+        ...M(r, s.routes, a)
+      };
+    };
+  const n = `${t}${e.path}`;
+  return {
+    path: n,
+    go: (c, s = !1) => r(n, c, s),
+    ...Object.keys(e.routes).reduce((c, s) => ({
+      ...c,
+      [s]: D(r, e.routes[s], n)
+    }), {})
+  };
+}, M = (r, e, t = "") => Object.keys(e).reduce((n, c) => ({
+  ...n,
+  [c]: D(r, e[c], t)
+}), {}), tr = (r, e) => {
+  const t = T(r, e), n = Q(t), c = v(t), s = rr(t);
+  return {
+    RoutingContext: t,
+    useRouter: n,
+    useQueryState: c,
+    useDebouncedQueryState: s
+  };
 };
 export {
-  p as RoutingContext,
-  rr as addQuery,
-  E as generateRouter,
-  Q as parseQuery,
-  g as queryStringOptions,
-  er as removeQuery,
-  nr as useDebouncedQueryState,
-  tr as useQueryState,
-  v as useRouter
+  M as generateRoutes,
+  tr as generateRouting
 };
