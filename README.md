@@ -50,32 +50,54 @@ export const routes = {
 
 ```tsx
 
-import { RoutingContext } from '@fabiulous/routing';
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router';
+import { generateRoutes, generateRouting, addQuery } from '@fabiulous/routing';
 
-interface Props<T> {
-  routes: T;
-  location: Location;
-  go: (pathname: string, params: Maybe<Routing.RouteParams>, replace: Maybe<boolean>) => void;
-}
+import { routes } from '@shared/routes';
 
-export const RoutingProvider = <T extends Routing.Config>({ children, routes, location, go }: React.PropsWithChildren<Props<T>>) => {
+// Generate Context and hooks dynamically to infer router type correctly
+const {
+  RoutingContext: _RoutingContext,
+  useRouter: _useRouter,
+  useQueryState: _useQueryState,
+  useDebouncedQueryState: _useDebouncedQueryState,
+} = generateRouting(() => {}, routes);
 
-const router = React.useMemo(() => generateRouter(go, routes), [go]);
+export const RoutingContext = _RoutingContext;
 
-return (
-    <RoutingContext.Provider
-      value={{
-        router: router as Routing.RecursiveRoutes<T>,
-        location,
-        go: (params, replace) => go(window.location.pathname, params, replace),
-      }}
-    >
+export const RoutingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const go = React.useCallback((pathname: string, params: CVT.Maybe<Record<string, unknown>>, replace: boolean = false) => {
+    navigate({
+      pathname,
+      search: params && addQuery(window.location.search, params),
+    }, {
+      replace,
+    });
+  }, [navigate]);
+
+  const router = React.useMemo(() => generateRoutes(go, routes), [go]);
+
+  return (
+    <RoutingContext.Provider value={{
+      router,
+      location,
+      go: (params: CVT.Maybe<Record<string, unknown>>, replace?: boolean) => go(location.pathname, params, replace),
+    }}>
       {children}
     </RoutingContext.Provider>
-);
+  );
 };
 
 export const RoutingConsumer = RoutingContext.Consumer;
+
+export const useRouter = _useRouter;
+export const useQueryState = _useQueryState;
+export const useDebouncedQueryState = _useDebouncedQueryState;
 
 ```
 
@@ -83,7 +105,7 @@ export const RoutingConsumer = RoutingContext.Consumer;
 
 ```ts
 
-import { useRouter } from '@fabiulous/routing';
+import { useRouter } from 'src/routing';
 
 const router = useRouter();
 
@@ -96,7 +118,7 @@ router.products.view(7).go();
 
 ```ts
 
-import { useQueryState, useDebouncedQueryState } from '@fabiulous/routing';
+import { useQueryState, useDebouncedQueryState } from 'src/routing';
 
 [param, setParam] = useQueryState('page', 1);
 [currSearch, search, setSearch] = useDebouncedQueryState('search');

@@ -2,6 +2,7 @@ import { Routing } from './types';
 import { generateContext } from './context';
 import { generateUseDebouncedQueryState, generateUseQueryState, generateUseRouter } from './hooks';
 export { generateRoutes } from './routing';
+export * from './helpers/query';
 
 
 export const generateRouting = <T extends Routing.Config>(fn: Routing.ConfigFn, config: T) => {
