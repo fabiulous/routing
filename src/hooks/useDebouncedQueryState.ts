@@ -8,7 +8,7 @@ import { Maybe, Routing } from '../types';
 
 
 export const generateUseDebouncedQueryState = <T extends Routing.Config>(context: React.Context<Routing.ContextProps<Routing.RecursiveRoutes<T>>>) => {
-  return <T = string>(name: string, defaultValue?: T, delay: number = 500): [Maybe<T>, Maybe<T>, React.Dispatch<React.SetStateAction<T | undefined>>] => {
+  return <T = string>(name: string, defaultValue?: T, delay: number = 500, replace: boolean = false): [Maybe<T>, Maybe<T>, React.Dispatch<React.SetStateAction<T | undefined>>] => {
     const { go, location } = React.useContext(context);
 
     const timeout = React.useRef<number>();
@@ -21,8 +21,8 @@ export const generateUseDebouncedQueryState = <T extends Routing.Config>(context
     const [value, setValue] = React.useState(query);
   
     const updateHistory = React.useCallback(() => {
-      go({ [name]: value });
-    }, [go, name, value]);
+      go({ [name]: value }, replace);
+    }, [go, name, value, replace]);
   
     React.useEffect(
       () => {

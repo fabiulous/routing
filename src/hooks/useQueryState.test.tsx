@@ -44,6 +44,30 @@ describe('useQueryState', () => {
       result.current[1]('UpdatedTest');
     });
 
-    expect(customFunction).toHaveBeenLastCalledWith('blank', { name: 'UpdatedTest' }, undefined );
+    expect(customFunction).toHaveBeenLastCalledWith('blank', { name: 'UpdatedTest' }, false );
+  })
+
+  test('Should send replace false to go function', () => {
+    const { result } = renderHook(() => useQueryState('name'), { wrapper });
+
+    expect(result.current[0]).toBe('Test');
+
+    act(() => {
+      result.current[1]('UpdatedTest', false);
+    });
+
+    expect(customFunction).toHaveBeenLastCalledWith('blank', { name: 'UpdatedTest' }, false );
+  })
+
+  test('Should send replace true to go function', () => {
+    const { result } = renderHook(() => useQueryState('name'), { wrapper });
+
+    expect(result.current[0]).toBe('Test');
+
+    act(() => {
+      result.current[1]('UpdatedTest', true);
+    });
+
+    expect(customFunction).toHaveBeenLastCalledWith('blank', { name: 'UpdatedTest' }, true );
   })
 });

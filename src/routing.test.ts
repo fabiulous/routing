@@ -17,6 +17,8 @@ describe('generateRouter testing', () => {
     expect(editResult.path).toBe('/users/edit/:userId');
     const editResultWithId = result.users.edit(1);
     expect(editResultWithId.path).toBe('/users/edit/1');
+    const editResultWithIdAndTab = result.users.editTab(1, 'test');
+    expect(editResultWithIdAndTab.path).toBe('/users/edit/1/test');
   })
 
   test('Route go', () => {

@@ -35,5 +35,6 @@ describe('useRouter', () => {
   
     expect(result.current.home.path).toBe(router.home.path);
     expect(result.current.auth.login.path).toBe(router.auth.login.path);
+    expect(result.current.users.editTab(1, 'test').path).toBe(router.users.editTab(1, 'test').path);
   })
 });

@@ -50,7 +50,7 @@ describe('useDebouncedQueryState', () => {
 
     vi.runAllTimers();
   
-    expect(customFunction).toHaveBeenLastCalledWith('blank', { name: 'UpdatedTest' }, undefined);
+    expect(customFunction).toHaveBeenLastCalledWith('blank', { name: 'UpdatedTest' }, false);
 
     expect(result.current[0]).toBe('UpdatedTest');
     expect(result.current[1]).toBe('Test');
