@@ -11,8 +11,8 @@ const generateRoute = <T extends Routing.Routes> (fn: (path: string, params: May
   }
 
   if (typeof route === 'function') {
-    return args => {
-      const routeResult = route(args);
+    return (...args) => {
+      const routeResult = route(...args);
 
       if (typeof routeResult === 'string') {
         const path = `${basePath}${routeResult}`;

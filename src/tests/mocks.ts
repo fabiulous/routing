@@ -11,6 +11,7 @@ export const routes = {
     routes: {
       create: '/create',
       edit: (userId: string | number = ':userId') => `/edit/${userId}`,
+      editTab: (userId: string | number = ':userId', tab: string) => `/edit/${userId}/${tab}`,
       view: (userId: string | number = ':userId') => ({
         path: `/${userId}`,
         routes: {
